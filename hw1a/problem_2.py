@@ -83,7 +83,7 @@ def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
 
 
 
-def problem_2c(guess=(10,10)):
+def problem_2c(guess=(10,10), optimize_function=minimize):
     """
     Finds the values for R1, R2 that optimize fc_per_wavelength around 200mm.
 
@@ -91,7 +91,7 @@ def problem_2c(guess=(10,10)):
 
     wavelength_array =  np.arange(0.4, 0.8, 0.001)
 
-    return minimize(
+    return optimize_function(
         lambda lens_curvatures: \
         rms_deviation_over_all_wavelengths(lens_curvatures, wavelength_array),
         guess)
