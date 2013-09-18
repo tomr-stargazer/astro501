@@ -60,7 +60,7 @@ def fc_per_wavelength(lens_curvatures, wavelengths):
     R2 = lens_curvatures[1]
 
     # These two lines' math is the part of this code I am most shaky about.
-    left_fraction = 2 * (n2(wavelengths) - 1)/R2
+    left_fraction = -(R2/(2 * (n2(wavelengths) - 1)))**(-1)
     right_fraction = (s - R1/(2*(n1(wavelengths) - 1)))**(-1)
 
     inverse_fc = left_fraction - right_fraction
