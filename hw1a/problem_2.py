@@ -45,3 +45,31 @@ def problem_2b():
     
     plt.show()
     return fig
+
+def problem_2c(guess=(10,10)):
+    """
+    This is the minimizing problem.
+
+    """
+
+    # All lengths in millimeters.
+    
+    s = 1 
+
+    def inverse_fc_per_wavelength(r1r2, lam):
+        r1 = r1r2[0]
+        r2 = r1r2[1]
+
+        # These two lines' math is the part of this code I am most shaky about.
+        left_fraction = 2 * (n2(lam) - 1)/r2
+        right_fraction = (s - r1/(2*(n1(lam) - 1)))**(-1)
+
+        inverse_fc = left_fraction - right_fraction
+
+        return inverse_fc
+
+    lam_array =  np.arange(0.4, 0.85, 0.05)
+
+    print 1/inverse_fc_per_wavelength(guess, lam_array)
+
+    
