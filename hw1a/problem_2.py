@@ -14,7 +14,7 @@ from __future__ import division
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.optimize import minimize
+from scipy.optimize import minimize, brute
 
 # n(lambda) for BK7
 n1 = lambda wavelength: 1.541316168 - 0.0418*wavelength
@@ -85,7 +85,7 @@ def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
 
 
 
-def problem_2c(guess=(10,10), optimize_function=minimize, **kwargs):
+def problem_2c(optimize_function=brute, **kwargs):
     """
     Finds the values for R1, R2 that optimize fc_per_wavelength around 200mm.
 
@@ -93,6 +93,17 @@ def problem_2c(guess=(10,10), optimize_function=minimize, **kwargs):
     mood of the day, and passes extra keyword arguments into them.
 
     """
+
+    if 'guess' not in kwargs:
+        if optimize_function == brute:
+            guess = (slice(5,500,2),slice(5,500,2))
+        elif optimize_function == minimize:
+            guess=(10,10) 
+        else:
+            guess=(100,100)
+    else:
+        guess=kwargs['guess']
+        del kwargs['guess']
 
     wavelength_array =  np.arange(0.4, 0.8, 0.001)
 
