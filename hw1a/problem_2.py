@@ -111,5 +111,23 @@ def problem_2c(optimize_function=brute, **kwargs):
         lambda lens_curvatures: \
         rms_deviation_over_all_wavelengths(lens_curvatures, wavelength_array),
         guess, **kwargs)
+
+def plot_solution(lens_curvatures, wavelength_array):
+    """ Plots the results of the optimization. """
+
+    fig = plt.figure()
+
+    R1 = lens_curvatures[0]
+    R2 = lens_curvatures[1]
+
+    plt.plot(wavelength_array, fc_per_wavelength(lens_curvatures, wavelength_array))
+
+    plt.title(r"Focal length solution: $R_1$=%.2f mm and $R_2$=%.2f mm" % (R1, R2))
+    plt.xlabel(r"Wavelength $\lambda (\mu m)$")
+    plt.ylabel("Back focal distance of compound lens")
+
+    plt.show()
+
+    return fig
     
     
