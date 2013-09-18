@@ -55,7 +55,7 @@ def problem_2b():
 s = 1 
 
 def fc_per_wavelength(lens_curvatures, wavelengths):
-    """ Gives the focal length at each wavelength."""
+    """ Gives the compund lens focal length at each wavelength."""
     
     R1 = lens_curvatures[0]
     R2 = lens_curvatures[1]
@@ -72,8 +72,8 @@ def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
                                        target_focal_length=200, 
                                        func=fc_per_wavelength):
     """
-    Gives the deviation, over all provided wavelengths,
-    of the focal length from the target focal length.
+    Gives the rms deviation, over all provided wavelengths,
+    of the actual focal length from the target focal length.
 
     """
 
@@ -88,6 +88,9 @@ def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
 def problem_2c(guess=(10,10), optimize_function=minimize, **kwargs):
     """
     Finds the values for R1, R2 that optimize fc_per_wavelength around 200mm.
+
+    It's general -- it takes in different optimize functions depending on your
+    mood of the day, and passes extra keyword arguments into them.
 
     """
 
