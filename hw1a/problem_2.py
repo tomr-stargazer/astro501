@@ -63,6 +63,22 @@ def fc_per_wavelength(lens_curvatures, wavelengths):
 
     return 1/inverse_fc
 
+def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
+                                       target_focal_length=200, 
+                                       func=fc_per_wavelength):
+    """
+    Gives the deviation, over all provided wavelengths,
+    of the focal length from the target focal length.
+
+    """
+
+    deviation_array = target_focal_length - func(lens_curvatures, wavelengths)
+
+    rms = np.sqrt(np.mean(deviation_array**2))
+
+    return rms
+
+
 
 def problem_2c(guess=(10,10)):
     """
@@ -75,20 +91,6 @@ def problem_2c(guess=(10,10)):
 
     #now, we want to get the rms deviation from 200
 
-    def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
-                                           target_focal_length=200, 
-                                           func=fc_per_wavelength):
-        """
-        Gives the deviation, over all provided wavelengths,
-        of the focal length from the target focal length.
-
-        """
-
-        deviation_array = target_focal_length - func(lens_curvatures, wavelengths)
-
-        rms = np.sqrt(np.mean(deviation_array**2))
-
-        return rms
 
     return minimize(
         lambda lens_curvatures: \
