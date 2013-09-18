@@ -49,12 +49,11 @@ def problem_2b():
     return fig
 
 # All lengths in millimeters.
-
 # s: distance between lenses
 s = 1 
 
 def fc_per_wavelength(lens_curvatures, wavelengths):
-    """ Gives the inverse focal length at each wavelength."""
+    """ Gives the focal length at each wavelength."""
     
     R1 = lens_curvatures[0]
     R2 = lens_curvatures[1]
@@ -90,7 +89,7 @@ def problem_2c(guess=(10,10)):
 
     """
 
-    wavelength_array =  np.arange(0.4, 0.8, 0.05)
+    wavelength_array =  np.arange(0.4, 0.8, 0.001)
 
     return minimize(
         lambda lens_curvatures: \
