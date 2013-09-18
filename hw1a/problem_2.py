@@ -6,6 +6,8 @@ Problem 2 is about Optics.
 See http://scipy-lectures.github.io/advanced/mathematical_optimization/
 if you get scared about optimization.
 
+Also, http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.brute.html
+
 """
 
 from __future__ import division
@@ -83,7 +85,7 @@ def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
 
 
 
-def problem_2c(guess=(10,10), optimize_function=minimize):
+def problem_2c(guess=(10,10), optimize_function=minimize, **kwargs):
     """
     Finds the values for R1, R2 that optimize fc_per_wavelength around 200mm.
 
@@ -94,6 +96,6 @@ def problem_2c(guess=(10,10), optimize_function=minimize):
     return optimize_function(
         lambda lens_curvatures: \
         rms_deviation_over_all_wavelengths(lens_curvatures, wavelength_array),
-        guess)
+        guess, **kwargs)
     
     
