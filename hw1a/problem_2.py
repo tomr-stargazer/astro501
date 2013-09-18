@@ -57,6 +57,7 @@ def problem_2c(guess=(10,10)):
     s = 1 
 
     def inverse_fc_per_wavelength(r1r2, lam):
+        """ Gives the inverse focal length at each wavelength."""
         r1 = r1r2[0]
         r2 = r1r2[1]
 
@@ -68,8 +69,36 @@ def problem_2c(guess=(10,10)):
 
         return inverse_fc
 
-    lam_array =  np.arange(0.4, 0.85, 0.05)
+    lam_array =  np.arange(0.4, 0.8, 0.05)
 
-    print 1/inverse_fc_per_wavelength(guess, lam_array)
+    #now, we want to get the rms deviation from 200
+
+    fc_per_wavelength = lambda r1r2, lam: 1/inverse_fc_per_wavelength(r1r2, lam)
+    #    print fc_per_wavelength(guess, lam_array)
+    
+    def rms_deviation_over_all_wavelengths(r1r2, wavelengths,
+                                           target_focal_length=200, 
+                                           func=fc_per_wavelength):
+        """
+        Gives the deviation, over all provided wavelengths,
+        of the focal length from the target focal length.
+
+        """
+
+        deviation_array = target_focal_length - func(r1r2, wavelengths)
+
+        #        print deviation_array
+
+        rms = np.sqrt(np.mean(deviation_array**2))
+
+        return rms
+
+    return minimize( lambda r1r2: rms_deviation_over_all_wavelengths(r1r2, lam_array), 
+                     guess)
+
+    
+    
+#    print rms_deviation_over_all_wavelengths(guess, lam_array)
+        
 
     
