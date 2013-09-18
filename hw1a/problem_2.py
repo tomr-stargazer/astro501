@@ -11,7 +11,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
-
 # n(lambda) for BK7
 n1 = lambda wavelength: 1.541316168 - 0.0418*wavelength
 # n(lambda) for Schott F2
@@ -46,34 +45,37 @@ def problem_2b():
     plt.show()
     return fig
 
+# All lengths in millimeters.
+
+# s: distance between lenses
+s = 1 
+
+def fc_per_wavelength(lens_curvatures, wavelengths):
+    """ Gives the inverse focal length at each wavelength."""
+    R1 = lens_curvatures[0]
+    R2 = lens_curvatures[1]
+
+    # These two lines' math is the part of this code I am most shaky about.
+    left_fraction = 2 * (n2(wavelengths) - 1)/R2
+    right_fraction = (s - R1/(2*(n1(wavelengths) - 1)))**(-1)
+
+    inverse_fc = left_fraction - right_fraction
+
+    return 1/inverse_fc
+
+
 def problem_2c(guess=(10,10)):
     """
     This is the minimizing problem.
 
     """
 
-    # All lengths in millimeters.
-    
-    s = 1 
-
-    def fc_per_wavelength(r1r2, wavelength):
-        """ Gives the inverse focal length at each wavelength."""
-        r1 = r1r2[0]
-        r2 = r1r2[1]
-
-        # These two lines' math is the part of this code I am most shaky about.
-        left_fraction = 2 * (n2(wavelength) - 1)/r2
-        right_fraction = (s - r1/(2*(n1(wavelength) - 1)))**(-1)
-
-        inverse_fc = left_fraction - right_fraction
-
-        return 1/inverse_fc
 
     wavelength_array =  np.arange(0.4, 0.8, 0.05)
 
     #now, we want to get the rms deviation from 200
 
-    def rms_deviation_over_all_wavelengths(r1r2, wavelengths,
+    def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
                                            target_focal_length=200, 
                                            func=fc_per_wavelength):
         """
@@ -82,16 +84,16 @@ def problem_2c(guess=(10,10)):
 
         """
 
-        deviation_array = target_focal_length - func(r1r2, wavelengths)
-
-        #        print deviation_array
+        deviation_array = target_focal_length - func(lens_curvatures, wavelengths)
 
         rms = np.sqrt(np.mean(deviation_array**2))
 
         return rms
 
-    return minimize( lambda r1r2: rms_deviation_over_all_wavelengths(r1r2, wavelength_array), 
-                     guess)
+    return minimize(
+        lambda lens_curvatures: \
+        rms_deviation_over_all_wavelengths(lens_curvatures, wavelength_array),
+        guess)
 
     
     
