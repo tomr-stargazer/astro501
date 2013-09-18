@@ -13,9 +13,9 @@ from scipy.optimize import minimize
 
 
 # n(lambda) for BK7
-n1 = lambda lam: 1.541316168 - 0.0418*lam
+n1 = lambda wavelength: 1.541316168 - 0.0418*wavelength
 # n(lambda) for Schott F2
-n2 = lambda lam: 1.6706 - 0.0862*lam
+n2 = lambda wavelength: 1.6706 - 0.0862*wavelength
 
 def problem_2b():
     """
@@ -23,12 +23,12 @@ def problem_2b():
 
     """
 
-    lam_range = np.arange(0.4, 0.85, 0.05)
+    wavelength_range = np.arange(0.4, 0.85, 0.05)
 
     fig = plt.figure()
 
-    plt.plot( lam_range, n2(lam_range), lw=2, label="Schott F2")
-    plt.plot( lam_range, n1(lam_range), lw=2, label="BK7")
+    plt.plot( wavelength_range, n2(wavelength_range), lw=2, label="Schott F2")
+    plt.plot( wavelength_range, n1(wavelength_range), lw=2, label="BK7")
 
     plt.legend()
 
@@ -56,25 +56,25 @@ def problem_2c(guess=(10,10)):
     
     s = 1 
 
-    def inverse_fc_per_wavelength(r1r2, lam):
+    def inverse_fc_per_wavelength(r1r2, wavelength):
         """ Gives the inverse focal length at each wavelength."""
         r1 = r1r2[0]
         r2 = r1r2[1]
 
         # These two lines' math is the part of this code I am most shaky about.
-        left_fraction = 2 * (n2(lam) - 1)/r2
-        right_fraction = (s - r1/(2*(n1(lam) - 1)))**(-1)
+        left_fraction = 2 * (n2(wavelength) - 1)/r2
+        right_fraction = (s - r1/(2*(n1(wavelength) - 1)))**(-1)
 
         inverse_fc = left_fraction - right_fraction
 
         return inverse_fc
 
-    lam_array =  np.arange(0.4, 0.8, 0.05)
+    wavelength_array =  np.arange(0.4, 0.8, 0.05)
 
     #now, we want to get the rms deviation from 200
 
-    fc_per_wavelength = lambda r1r2, lam: 1/inverse_fc_per_wavelength(r1r2, lam)
-    #    print fc_per_wavelength(guess, lam_array)
+    fc_per_wavelength = lambda r1r2, wavelength: 1/inverse_fc_per_wavelength(r1r2, wavelength)
+    #    print fc_per_wavelength(guess, wavelength_array)
     
     def rms_deviation_over_all_wavelengths(r1r2, wavelengths,
                                            target_focal_length=200, 
@@ -93,12 +93,12 @@ def problem_2c(guess=(10,10)):
 
         return rms
 
-    return minimize( lambda r1r2: rms_deviation_over_all_wavelengths(r1r2, lam_array), 
+    return minimize( lambda r1r2: rms_deviation_over_all_wavelengths(r1r2, wavelength_array), 
                      guess)
 
     
     
-#    print rms_deviation_over_all_wavelengths(guess, lam_array)
+#    print rms_deviation_over_all_wavelengths(guess, wavelength_array)
         
 
     
