@@ -9,17 +9,19 @@ from __future__ import division
 
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import minimize
+
+
+# n(lambda) for BK7
+n1 = lambda lam: 1.541316168 - 0.0418*lam
+# n(lambda) for Schott F2
+n2 = lambda lam: 1.6706 - 0.0862*lam
 
 def problem_2b():
     """
     Makes a plot comparing n_1(lambda) to n_2(lambda).
 
     """
-
-    # n(lambda) for BK7
-    n1 = lambda lam: 1.541316168 - 0.0418*lam
-    # n(lambda) for Schott F2
-    n2 = lambda lam: 1.6706 - 0.0862*lam
 
     lam_range = np.arange(0.4, 0.85, 0.05)
 
