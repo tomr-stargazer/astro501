@@ -3,6 +3,9 @@ Code relating to Problem 2 in HW #1a for Astro 501.
 
 Problem 2 is about Optics.
 
+See http://scipy-lectures.github.io/advanced/mathematical_optimization/
+if you get scared about optimization.
+
 """
 
 from __future__ import division
@@ -52,6 +55,7 @@ s = 1
 
 def fc_per_wavelength(lens_curvatures, wavelengths):
     """ Gives the inverse focal length at each wavelength."""
+    
     R1 = lens_curvatures[0]
     R2 = lens_curvatures[1]
 
@@ -82,24 +86,15 @@ def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
 
 def problem_2c(guess=(10,10)):
     """
-    This is the minimizing problem.
+    Finds the values for R1, R2 that optimize fc_per_wavelength around 200mm.
 
     """
 
-
     wavelength_array =  np.arange(0.4, 0.8, 0.05)
-
-    #now, we want to get the rms deviation from 200
-
 
     return minimize(
         lambda lens_curvatures: \
         rms_deviation_over_all_wavelengths(lens_curvatures, wavelength_array),
         guess)
-
     
-    
-#    print rms_deviation_over_all_wavelengths(guess, wavelength_array)
-        
-
     
