@@ -157,7 +157,7 @@ def problem_2c(optimize_function=brute, **kwargs):
 
     if 'guess' not in kwargs:
         if optimize_function == brute:
-            guess = (slice(5,500,2),slice(5,500,2))
+            guess = (slice(5,250,2),slice(5,500,2))
         elif optimize_function == minimize:
             guess=(10,10) 
         else:
