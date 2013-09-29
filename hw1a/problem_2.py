@@ -29,6 +29,11 @@ def problem_2b():
     """
     Makes a plot comparing n_1(lambda) to n_2(lambda).
 
+    Returns
+    -------
+    fig : matplotlib.pyplot.Figure
+        The figure we plot the solution of 2b onto.
+
     """
 
     wavelength_range = np.arange(0.4, 0.85, 0.05)
@@ -59,7 +64,24 @@ def problem_2b():
 s = 1 
 
 def fc_per_wavelength(lens_curvatures, wavelengths):
-    """ Gives the compund lens focal length at each wavelength."""
+    """ 
+    Gives the compund lens focal length at each wavelength.
+
+    Parameters
+    ----------
+    lens_curvatures : tuple of 2 floats
+        The values (in mm) for R1 and R2, respectively.
+    wavelengths : np.ndarray of floats
+        An array of wavelengths for which to calculate
+        the focal length.
+
+    Returns
+    -------
+    fc : np.ndarray of floats
+        The focal distance of the compound lens per wavelength.
+        This array is the same length as `wavelengths`.
+    
+    """
     
     R1, R2 = lens_curvatures
 
@@ -69,7 +91,9 @@ def fc_per_wavelength(lens_curvatures, wavelengths):
 
     inverse_fc = left_fraction - right_fraction
 
-    return 1/inverse_fc
+    fc = 1 / inverse_fc
+    
+    return fc
 
 def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
                                        target_focal_length=200, 
@@ -77,6 +101,27 @@ def rms_deviation_over_all_wavelengths(lens_curvatures, wavelengths,
     """
     Gives the rms deviation, over all provided wavelengths,
     of the actual focal length from the target focal length.
+
+    Parameters
+    ----------
+    lens_curvatures : tuple of 2 floats
+        The values (in mm) for R1 and R2, respectively.
+    wavelengths : np.ndarray of floats
+        An array of wavelengths for which to calculate
+        the rms values.
+    target_focal_length : float, optional, default: 200
+        The desired focal length, in mm, that you want to 
+        calculate deviations from. Defaults to 200 mm because
+        that's what John Monnier said to use on the homework.
+    func : function, optional, default: fc_per_wavelength
+        Which function to use for the 'actual' fc value when
+        subtracting 'expected' minus 'actual'. Use the default.
+    
+    Returns
+    -------
+    rms : np.ndarray of floats
+        An array of root-mean-square deviations from the target 
+        focal length. This array is the same length as `wavelengths`.
 
     """
 
@@ -94,6 +139,19 @@ def problem_2c(optimize_function=brute, **kwargs):
 
     It's general -- it takes in different optimize functions depending on your
     mood of the day, and passes extra keyword arguments into them.
+
+    Parameters
+    ----------
+    optimize_function : function, optional, default: brute
+        Which scipy.optimize function to use as an optimizer.
+        Now defaults to `brute` so that we can plot the output using
+        plt.imshow.
+
+    Returns
+    -------
+    result : output of optimize_function
+        Returns the output of optimize_function. Look at the
+        documentation for whatever you're using as optimize_function.
 
     """
 
@@ -121,6 +179,11 @@ def plot_solution_space_contours(**kwargs):
 
     Calls problem_2c using brute and full_output=True, and then works
     with the information from that.
+
+    Returns
+    -------
+    fig : matplotlib.pyplot.Figure
+        The figure we plot the contours onto.    
     
     """
 
@@ -143,16 +206,34 @@ def plot_solution_space_contours(**kwargs):
     return fig
 
 def plot_solution(lens_curvatures, wavelength_array):
-    """ Plots the results of the optimization. """
+    """ 
+    Plots the rms deviation for the given lens_curvatures vs wavelength.
+    
+    Parameters
+    ----------
+    lens_curvatures : tuple of 2 floats
+        The values (in mm) for R1 and R2, respectively.
+    wavelengths : np.ndarray of floats
+        An array of wavelengths for which to calculate
+        the rms values.
+
+    Returns
+    -------
+    fig : matplotlib.pyplot.Figure
+        The figure we plot the line onto.
+    
+    """
 
     fig = plt.figure()
 
     R1 = lens_curvatures[0]
     R2 = lens_curvatures[1]
 
-    plt.plot(wavelength_array, fc_per_wavelength(lens_curvatures, wavelength_array))
+    plt.plot(wavelength_array, 
+             fc_per_wavelength(lens_curvatures, wavelength_array))
 
-    plt.title(r"Focal length solution: $R_1$=%.2f mm and $R_2$=%.2f mm" % (R1, R2))
+    plt.title(r"Focal length solution: $R_1$=%.2f mm and $R_2$=%.2f mm" % 
+              (R1, R2))
     plt.xlabel(r"Wavelength $\lambda (\mu m)$")
     plt.ylabel("Back focal distance of compound lens")
 
