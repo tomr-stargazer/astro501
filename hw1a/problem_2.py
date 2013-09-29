@@ -187,7 +187,7 @@ def plot_solution_space_contours(**kwargs):
     
     """
 
-    (R1R2_tuple, residual,
+    ((R1, R2), residual,
      input_grid, output_grid) = problem_2c(full_output=True)
 
     fig = plt.figure()
@@ -209,6 +209,15 @@ def plot_solution_space_contours(**kwargs):
 
     plt.suptitle("Astro 501, Homework #1a, Problem 2c. Tom Rice")
     plt.title("How good is the fit as a function of $R_1$ and $R_2$?")
+
+    plt.plot([R1], [R2], "r+", ms=75, markeredgewidth=2)
+
+    plt.text(R1+20, R2-70,
+             ("Best fit:\n\n"
+              "$R_1 = %.3f$ mm,\n"
+              "$R_2 = %.3f$ mm,\n\n"
+              "Residual rms: %.4f mm" % (R1, R2, residual)))
+
 
     return fig
 
