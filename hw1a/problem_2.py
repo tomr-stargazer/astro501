@@ -8,6 +8,10 @@ if you get scared about optimization.
 
 Also, http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.brute.html
 
+Refractive indices come from here:
+http://refractiveindex.info/?group=GLASSES&material=BK7
+http://refractiveindex.info/?group=SCHOTT&material=N-F2
+
 """
 
 from __future__ import division
