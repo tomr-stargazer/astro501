@@ -52,7 +52,8 @@ def problem_2b():
     plt.ylabel(r"Index of refraction $n(\lambda)$")
     plt.xlabel(r"Wavelength $\lambda (\mu m)$")
 
-    plt.title("Problem 2b")
+    plt.suptitle("Astro 501, Homework #1a, Problem 2b. Tom Rice")
+    plt.title("Refractive indices of two materials versus wavelength.")
 
     plt.text(0.5, 1.63, r"$n_2(\lambda) = 1.6707 - 0.0862 \lambda/\mu m$", 
              fontsize=18)
