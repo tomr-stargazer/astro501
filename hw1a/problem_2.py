@@ -61,8 +61,7 @@ s = 1
 def fc_per_wavelength(lens_curvatures, wavelengths):
     """ Gives the compund lens focal length at each wavelength."""
     
-    R1 = lens_curvatures[0]
-    R2 = lens_curvatures[1]
+    R1, R2 = lens_curvatures
 
     # These two lines' math is the part of this code I am most shaky about.
     left_fraction = -(R2/(2 * (n2(wavelengths) - 1)))**(-1)
