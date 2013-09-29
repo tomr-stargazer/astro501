@@ -192,7 +192,8 @@ def plot_solution_space_contours(**kwargs):
 
     fig = plt.figure()
 
-    img = plt.imshow(output_grid, origin='lower',
+    # We do a transpose because imshow has a strange default order.
+    img = plt.imshow(output_grid.transpose(), origin='lower',
                      vmin=0, vmax=100, cmap='cubehelix', 
                      extent=(
                          input_grid[0].min(), input_grid[0].max(), 
