@@ -204,6 +204,12 @@ def plot_solution_space_contours(**kwargs):
 
     cbar.set_label("Total rms of fit")
 
+    plt.xlabel(r"$R_1$ (mm)")
+    plt.ylabel(r"$R_2$ (mm)")
+
+    plt.suptitle("Astro 501, Homework #1a, Problem 2c. Tom Rice")
+    plt.title("How good is the fit as a function of $R_1$ and $R_2$?")
+
     return fig
 
 def plot_solution(lens_curvatures, wavelength_array):
