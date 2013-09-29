@@ -12,6 +12,9 @@ Refractive indices come from here:
 http://refractiveindex.info/?group=GLASSES&material=BK7
 http://refractiveindex.info/?group=SCHOTT&material=N-F2
 
+Unrelatedly, check out the cubehelix color palette:
+http://www.ifweassume.com/2013/05/cubehelix-or-how-i-learned-to-love.html
+
 """
 
 from __future__ import division
