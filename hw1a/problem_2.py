@@ -112,6 +112,33 @@ def problem_2c(optimize_function=brute, **kwargs):
         rms_deviation_over_all_wavelengths(lens_curvatures, wavelength_array),
         guess, **kwargs)
 
+def plot_solution_space_contours(**kwargs):
+    """
+    Makes a contour plot showing the best values for R1, R2.
+
+    Calls problem_2c using brute and full_output=True, and then works
+    with the information from that.
+    
+    """
+
+    (R1R2_tuple, residual,
+     input_grid, output_grid) = problem_2c(full_output=True)
+
+    fig = plt.figure()
+
+    img = plt.imshow(output_grid, origin='lower',
+                     vmin=0, vmax=100, cmap='cubehelix', 
+                     extent=(
+                         input_grid[0].min(), input_grid[0].max(), 
+                         input_grid[1].min(), input_grid[1].max()
+                         )
+                    )
+    cbar = plt.colorbar(img)
+
+    cbar.set_label("Total rms of fit")
+
+    return fig
+
 def plot_solution(lens_curvatures, wavelength_array):
     """ Plots the results of the optimization. """
 
