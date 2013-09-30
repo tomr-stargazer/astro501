@@ -84,3 +84,29 @@ def make_radial_profile_of_E_aperture(z_max=40):
     plt.show()
     return fig
 
+def make_radial_profile_of_diffracted_power(z_sampling):
+    """
+    Shows the radial profile of the squared Fourier transform of E.
+
+    """
+
+    # Make a really well-sampled array of values from -20 to 20.
+    z_array = z = np.linspace(-20, 20, z_sampling)
+    E = E_aperture(z)
+
+    diffracted_E = np.fft.fftshift(np.fft.fft(E)) / np.sqrt(2*len(E))
+
+    diffracted_power = np.abs(diffracted_E)**2
+
+    # the theta values are like "spatial frequencies"
+    theta_array = np.fft.fftshift( np.fft.fftfreq( z.size, d=z[1]-z[0]))
+
+    fig = plt.figure()
+
+    plt.plot(theta_array, diffracted_power)
+
+    plt.ylabel(r" $|E(\theta)|^2 / E_0^2$")
+    plt.xlabel(r"Diffracted angle $\theta$ (radians)")
+
+    plt.show()
+    return fig
