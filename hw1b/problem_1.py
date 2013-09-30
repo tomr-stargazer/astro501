@@ -1,5 +1,6 @@
 """
 Code relating to Problem 1c in HW #1b for Astro 501.
+This code is hosted online at https://github.com/tomr-stargazer/astro501 .
 
 Problem 1 is about Fourier Transforms.
 
