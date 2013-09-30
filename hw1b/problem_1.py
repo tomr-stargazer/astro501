@@ -183,9 +183,12 @@ def make_radial_profile_of_diffracted_power(z_range=1500,
 
         plt.plot([-expected_fullwidth_halfmax/2, 
                   expected_fullwidth_halfmax/2], 
-                  [0.5, 0.5], 'r:', lw=3)
+                  [0.5, 0.5], 'r:', lw=3, label="Analytic FWHM prediction")
+
+        plt.legend(loc="lower left")
+        
         plt.text(-0.295, 0.5, 
-                 ("Analytic calculations of FWHM:\n\n"
+                 ("Analytic calculation of FWHM:\n\n"
                   r"$\frac{\lambda \sqrt{ \ln 2 }}{\sigma \pi}$"
                   " = %.4f radians" % expected_fullwidth_halfmax
                   ),
