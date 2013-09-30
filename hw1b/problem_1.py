@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 # Mathematically this gives
 # E(z) = E_0 exp( -0.5 * (z/25) )
 
-def E_aperture(z):
+def E_aperture(z, sigma_over_lambda=5):
     """
     Returns the value of the electric field in the aperture plane.
 
@@ -27,14 +27,17 @@ def E_aperture(z):
     we are setting it to one, i.e. dividing it out of all of our
     expressions of E.
 
-    Also, we are assuming $\sigma = 5 * \lambda$, and I use the 
-    notation $z = x / \lambda$ in this assumption.
+    The ratio $\sigma / \lambda$ is 5 by default, but is adjustable.
+    I use the notation $z = x / \lambda$ in this function.
 
     Parameters
     ----------
     z : float 
         The coordinate along the aperture plane, scaled by lambda.
         Defined as $z = z / \lambda$.
+    sigma_over_lambda : float, optional, default: 5
+        The value of sigma divided by wavelength. John Monnier has 
+        us using 5 in this problem, but it's fun to vary it.
 
     Returns
     -------
@@ -44,11 +47,11 @@ def E_aperture(z):
 
     """
 
-    E = np.exp(-0.5 * z**2 / 25)
+    E = np.exp(-0.5 * z**2 / sigma_over_lambda**2)
 
     return E
 
-def make_radial_profile_of_E_aperture(z_max=40):
+def make_radial_profile_of_E_aperture(z_max=40, sigma_over_lambda=5):
     """
     Plots E versus $z = x / \lambda$ over some z range.
 
@@ -56,6 +59,9 @@ def make_radial_profile_of_E_aperture(z_max=40):
     ----------
     z_max : float, optional, default: 40
         The max value of z to plot on the x-axis.
+    sigma_over_lambda : float, optional, default: 5
+        The value of sigma divided by wavelength. This is
+        passed onto E_aperture.
 
     Returns
     -------
@@ -71,10 +77,12 @@ def make_radial_profile_of_E_aperture(z_max=40):
 
     fig = plt.figure()
 
-    plt.plot(z_array, E_aperture(z_array))
+    plt.plot(z_array, E_aperture(z_array, 
+                                 sigma_over_lambda=sigma_over_lambda))
 
-    plt.suptitle("Astro 501, Homework #1b, Problem 1c. Tom Rice")    
-    plt.title("Radial profile of the aperture electric field")
+    plt.suptitle("Astro 501, Homework #1b, Problem 1c. Tom Rice")
+    plt.title("Radial profile of the aperture electric field, for "+
+              "$\\sigma / \\lambda = %s $" % sigma_over_lambda)
 
     plt.xlabel(r" $ x / \lambda $ " )
     #    plt.ylabel(r"$ \frac{E(x / \lambda)}{ E_0 } $", rotation='horizontal')
@@ -84,22 +92,30 @@ def make_radial_profile_of_E_aperture(z_max=40):
     plt.show()
     return fig
 
-def make_radial_profile_of_diffracted_power(z_sampling):
+def make_radial_profile_of_diffracted_power(z_sampling=512, 
+                                            sigma_over_lambda=5):
     """
     Shows the radial profile of the squared Fourier transform of E.
 
+    Parameters
+    ----------
+    sigma_over_lambda : float, optional, default: 5
+        The value of sigma divided by wavelength. This is
+        passed onto E_aperture.
+
     """
 
-    # Make a really well-sampled array of values from -20 to 20.
-    z_array = z = np.linspace(-20, 20, z_sampling)
-    E = E_aperture(z)
+    # Make an array of values from -20 to 20. 
+    z_array = np.linspace(-20, 20, z_sampling)
+    E = E_aperture(z_array, sigma_over_lambda=sigma_over_lambda)
 
     diffracted_E = np.fft.fftshift(np.fft.fft(E)) / np.sqrt(2*len(E))
 
     diffracted_power = np.abs(diffracted_E)**2
 
     # the theta values are like "spatial frequencies"
-    theta_array = np.fft.fftshift( np.fft.fftfreq( z.size, d=z[1]-z[0]))
+    theta_array = np.fft.fftshift( np.fft.fftfreq( z_array.size, 
+                                                   d=z_array[1]-z_array[0]))
 
     fig = plt.figure()
 
@@ -108,5 +124,7 @@ def make_radial_profile_of_diffracted_power(z_sampling):
     plt.ylabel(r" $|E(\theta)|^2 / E_0^2$")
     plt.xlabel(r"Diffracted angle $\theta$ (radians)")
 
+    plt.title("Radial profile of the diffracted power, for "+
+              "$\\sigma / \\lambda = %s $" % sigma_over_lambda)
     plt.show()
     return fig
