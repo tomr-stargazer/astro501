@@ -64,6 +64,18 @@ def E_aperture(z, sigma_over_lambda=5):
 
     return E
 
+def analytic_diffracted_power(theta, sigma_over_lambda=5):
+    """
+    Returns the analytically derived diffracted power.
+
+    You'll have to normalize it against that other diffracted power.
+
+    """
+
+    P = np.exp(-4 * sigma_over_lambda**2 * np.pi**2 * theta**2)
+
+    return P
+
 def make_radial_profile_of_E_aperture(z_max=40, sigma_over_lambda=5):
     """
     Plots E versus $z = x / \lambda$ over some z range.
