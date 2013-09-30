@@ -5,6 +5,11 @@ Problem 1 is about Fourier Transforms.
 
 """
 
+from __future__ import division
+
+import numpy as np
+import matplotlib.pyplot as plt
+
 # Part one: 
 # Assuming sigma = 5 * lambda, use the computer to make a radial profile
 # of the aperture electric field
@@ -38,3 +43,8 @@ def E_aperture(z):
         at the coordinate z.
 
     """
+
+    E = np.exp(-0.5 * z**2 / 25)
+
+    return E
+
