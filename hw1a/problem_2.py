@@ -191,8 +191,10 @@ def plot_solution_space_contours(**kwargs):
     
     """
 
-    ((R1, R2), residual,
-     input_grid, output_grid) = problem_2c(full_output=True)
+    ((R1, R2),
+     residual,
+     (input_R1_grid, input_R2_grid),
+     output_grid) = problem_2c(full_output=True)
 
     fig = plt.figure()
 
@@ -200,8 +202,8 @@ def plot_solution_space_contours(**kwargs):
     img = plt.imshow(output_grid.transpose(), origin='lower',
                      vmin=0, vmax=100, cmap='cubehelix', 
                      extent=(
-                         input_grid[0].min(), input_grid[0].max(), 
-                         input_grid[1].min(), input_grid[1].max()
+                         input_R1_grid.min(), input_R1_grid.max(),
+                         input_R2_grid.min(), input_R2_grid.max()
                          )
                     )
     cbar = plt.colorbar(img)
@@ -246,8 +248,7 @@ def plot_solution(lens_curvatures, wavelength_array):
 
     fig = plt.figure()
 
-    R1 = lens_curvatures[0]
-    R2 = lens_curvatures[1]
+    R1, R2 = lens_curvatures
 
     plt.plot(wavelength_array, 
              fc_per_wavelength(lens_curvatures, wavelength_array))
