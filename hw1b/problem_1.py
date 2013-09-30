@@ -40,7 +40,7 @@ def E_aperture(z, sigma_over_lambda=5):
     ----------
     z : float 
         The coordinate along the aperture plane, scaled by lambda.
-        Defined as $z = z / \lambda$.
+        Defined as $z = x / \lambda$.
     sigma_over_lambda : float, optional, default: 5
         The value of sigma divided by wavelength. John Monnier has 
         us using 5 in this problem, but it's fun to vary it.
