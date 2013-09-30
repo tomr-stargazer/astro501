@@ -3,6 +3,18 @@ Code relating to Problem 1c in HW #1b for Astro 501.
 
 Problem 1 is about Fourier Transforms.
 
+Since FFTs are super confusing, especially with the changes in
+coordinates and the required shifts and the imaginary parts everywhere,
+here are some links I found helpful to learn how to do numpy FFTs properly:
+
+http://stackoverflow.com/questions/5398304/fourier-transform-of-a-gaussian-is-not-a-gaussian-but-thats-wrong-python
+http://stackoverflow.com/questions/11320312/numpy-scipy-fft-for-voltage-time-data
+http://docs.scipy.org/doc/numpy/reference/generated/numpy.fft.fft.html
+
+(in other words, the official documentation plus Stack Overflow 
+is incredibly helpful.)
+
+
 """
 
 from __future__ import division
@@ -99,9 +111,18 @@ def make_radial_profile_of_diffracted_power(z_sampling=512,
 
     Parameters
     ----------
+    z_sampling : int, optional, default: 512
+        How many incremental values of z to use in the calculation.
+        This has no effect on the frequency/theta sampling, so don't
+        go overboard here.
     sigma_over_lambda : float, optional, default: 5
         The value of sigma divided by wavelength. This is
         passed onto E_aperture.
+
+    Returns
+    -------
+    fig : matplotlib.pyplot.Figure
+        The figure we plot the solution onto.
 
     """
 
@@ -109,8 +130,11 @@ def make_radial_profile_of_diffracted_power(z_sampling=512,
     z_array = np.linspace(-20, 20, z_sampling)
     E = E_aperture(z_array, sigma_over_lambda=sigma_over_lambda)
 
+    # "Diffracted E" is the Fourier transform of E -- it's
+    # the electric field as a function of angle.
     diffracted_E = np.fft.fftshift(np.fft.fft(E)) / np.sqrt(2*len(E))
 
+    # Power is the magnitude of the electric field, squared.
     diffracted_power = np.abs(diffracted_E)**2
 
     # the theta values are like "spatial frequencies"
@@ -121,10 +145,15 @@ def make_radial_profile_of_diffracted_power(z_sampling=512,
 
     plt.plot(theta_array, diffracted_power)
 
-    plt.ylabel(r" $|E(\theta)|^2 / E_0^2$")
+    plt.ylabel("Power of diffracted field, normalized: "
+               r"$|E(\theta)|^2 / E_0^2$")
     plt.xlabel(r"Diffracted angle $\theta$ (radians)")
 
+    plt.suptitle("Astro 501, Homework #1b, Problem 1c. Tom Rice")
     plt.title("Radial profile of the diffracted power, for "+
               "$\\sigma / \\lambda = %s $" % sigma_over_lambda)
+
+    plt.xlim(-1,1)
+    
     plt.show()
     return fig
