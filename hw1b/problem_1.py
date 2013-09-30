@@ -135,10 +135,11 @@ def make_radial_profile_of_diffracted_power(z_range=200,
 
     # "Diffracted E" is the Fourier transform of E -- it's
     # the electric field as a function of angle.
-    diffracted_E = np.fft.fftshift(np.fft.fft(E)) / np.sqrt(2*len(E))
+    diffracted_E = np.fft.fftshift(np.fft.fft(E))
+    diffracted_E_normalized = diffracted_E / diffracted_E.max()
 
     # Power is the magnitude of the electric field, squared.
-    diffracted_power = np.abs(diffracted_E)**2
+    diffracted_power = np.abs(diffracted_E_normalized)**2
 
     # the theta values are like "spatial frequencies"
     theta_array = np.fft.fftshift( np.fft.fftfreq( z_array.size, 
