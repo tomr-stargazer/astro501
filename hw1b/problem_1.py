@@ -85,7 +85,7 @@ def make_radial_profile_of_E_aperture(z_max=40, sigma_over_lambda=5):
     if z_max < 0:
         raise ValueError("z_max must be a positive number!")
 
-    z_array = np.arange(0, z_max, 0.05)
+    z_array = np.arange(-z_max, z_max, 0.05)
 
     fig = plt.figure()
 
@@ -96,10 +96,9 @@ def make_radial_profile_of_E_aperture(z_max=40, sigma_over_lambda=5):
     plt.title("Radial profile of the aperture electric field, for "+
               "$\\sigma / \\lambda = %s $" % sigma_over_lambda)
 
-    plt.xlabel(r" $ x / \lambda $ " )
-    #    plt.ylabel(r"$ \frac{E(x / \lambda)}{ E_0 } $", rotation='horizontal')
-    plt.ylabel(r"$ E(x / \lambda) / E_0$", 
-               rotation='horizontal')
+    plt.xlabel(r"Distance (in units $ x / \lambda $) from aperture center" )
+
+    plt.ylabel(r"$ E(x / \lambda) / E_0$")
 
     plt.show()
     return fig
