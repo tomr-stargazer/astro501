@@ -48,3 +48,28 @@ def E_aperture(z):
 
     return E
 
+def make_radial_profile_of_E_aperture(z_max=40):
+    """
+    Plots E versus $z = x / \lambda$ over some z range.
+
+    Parameters
+    ----------
+    z_max : float, optional, default: 40
+        The max value of z to plot on the x-axis.
+
+    Returns
+    -------
+    fig : matplotlib.pyplot.Figure
+        The figure we plot the solution onto.
+
+    """
+
+    z_array = np.arange(0, 100, 0.05)
+
+    fig = plt.figure()
+
+    plt.plot(z_array, E_aperture(z_array))
+
+    plt.show()
+    return fig
+
