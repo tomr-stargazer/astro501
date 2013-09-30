@@ -40,7 +40,7 @@ def E_aperture(z):
     -------
     E : float
         The strength of the electric field of the aperture plane
-        at the coordinate z.
+        at the coordinate z, scaled to the max strength $E_0$.
 
     """
 
