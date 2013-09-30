@@ -103,17 +103,22 @@ def make_radial_profile_of_E_aperture(z_max=40, sigma_over_lambda=5):
     plt.show()
     return fig
 
-def make_radial_profile_of_diffracted_power(z_sampling=512, 
+def make_radial_profile_of_diffracted_power(z_range=200,
+                                            z_sampling=512,
                                             sigma_over_lambda=5):
     """
     Shows the radial profile of the squared Fourier transform of E.
 
     Parameters
     ----------
+    z_range : int, optional, default: 200
+        What range of z values to use. A big number here means 
+        a well-sampled function in Fourier space, so bigger really
+        is better here.
     z_sampling : int, optional, default: 512
         How many incremental values of z to use in the calculation.
         This has no effect on the frequency/theta sampling, so don't
-        go overboard here.
+        go overboard here. You get bonus points if you use a power of 2.
     sigma_over_lambda : float, optional, default: 5
         The value of sigma divided by wavelength. This is
         passed onto E_aperture.
@@ -125,8 +130,7 @@ def make_radial_profile_of_diffracted_power(z_sampling=512,
 
     """
 
-    # Make an array of values from -20 to 20. 
-    z_array = np.linspace(-20, 20, z_sampling)
+    z_array = np.linspace(-z_range, z_range, z_sampling)
     E = E_aperture(z_array, sigma_over_lambda=sigma_over_lambda)
 
     # "Diffracted E" is the Fourier transform of E -- it's
