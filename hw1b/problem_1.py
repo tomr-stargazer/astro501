@@ -164,7 +164,7 @@ def make_radial_profile_of_diffracted_power(z_range=1500,
 
     fig = plt.figure()
 
-    plt.plot(theta_array, diffracted_power)
+    plt.plot(theta_array, diffracted_power, label="FFT-computed power")
 
     plt.ylabel("Power of diffracted field, normalized: "
                r"$|E(\theta)|^2 / E_0^2$")
@@ -177,6 +177,10 @@ def make_radial_profile_of_diffracted_power(z_range=1500,
     plt.xlim(-0.3, 0.3)
 
     if analytical_comparison:
+
+        power = analytic_diffracted_power(theta_array)
+        plt.plot(theta_array, power / power.max(), scalex=False,
+                 label="Analytic power")
 
         expected_fullwidth_halfmax =(np.sqrt(np.log(2)) /
                                      (sigma_over_lambda * np.pi))
@@ -196,6 +200,7 @@ def make_radial_profile_of_diffracted_power(z_range=1500,
         plt.plot([-expected_fullwidth_halfmax/2, 
                   expected_fullwidth_halfmax/2], 
                   [0.5, 0.5], 'r:', lw=3, label="Analytic FWHM prediction")
+
 
         plt.legend(loc="lower left")
         
