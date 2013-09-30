@@ -261,4 +261,9 @@ def plot_solution(lens_curvatures, wavelength_array):
 
     return fig
     
+def problem_2d():
+    """ Makes the plot for Problem 2d."""
+
+    wavelength_array = np.arange(0.4, 0.8, 0.005)
     
+    return plot_solution(problem_2c(), wavelength_array)
