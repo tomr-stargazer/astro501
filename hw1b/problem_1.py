@@ -15,6 +15,8 @@ http://docs.scipy.org/doc/numpy/reference/generated/numpy.fft.fft.html
 (in other words, the official documentation plus Stack Overflow 
 is incredibly helpful.)
 
+This had a section on what a Gaussian aperture is:
+http://www.uv.es/imaging3/lineas/apod.htm
 
 """
 
@@ -22,15 +24,6 @@ from __future__ import division
 
 import numpy as np
 import matplotlib.pyplot as plt
-
-# Part one: 
-# Assuming sigma = 5 * lambda, use the computer to make a radial profile
-# of the aperture electric field
-# E(x) = E_0 exp( -0.5 * (x/sigma)^2)
-# in units of z = x / lambda.
-
-# Mathematically this gives
-# E(z) = E_0 exp( -0.5 * (z/25) )
 
 def E_aperture(z, sigma_over_lambda=5):
     """
@@ -68,8 +61,23 @@ def analytic_diffracted_power(theta, sigma_over_lambda=5):
     """
     Returns the analytically derived diffracted power.
 
-    You'll have to normalize it against that other diffracted power.
+    It's not normalized in any sense or to any units, so 
+    you'll have to normalize it against that other diffracted power.
 
+    Parameters
+    ----------
+    theta : float
+        The input angular distance from the center of the beam.
+    sigma_over_lambda : float, optional, default: 5
+        The value of sigma divided by wavelength.
+
+    Returns
+    -------
+    P : float
+        The power of the diffracted electric field 
+        at angle `theta`, in some arbitrary unit system that
+        needs normalization.
+    
     """
 
     P = np.exp(-4 * sigma_over_lambda**2 * np.pi**2 * theta**2)
@@ -125,7 +133,7 @@ def make_radial_profile_of_diffracted_power(z_range=1500,
 
     Parameters
     ----------
-    z_range : int, optional, default: 200
+    z_range : int, optional, default: 1500
         What range of z values to use. A big number here means 
         a well-sampled function in Fourier space, so bigger really
         is better here.
@@ -136,7 +144,7 @@ def make_radial_profile_of_diffracted_power(z_range=1500,
     sigma_over_lambda : float, optional, default: 5
         The value of sigma divided by wavelength. This is
         passed onto E_aperture.
-    analytical_comparison : bool, optional, default: False
+    analytical_comparison : bool, optional, default: True
         Compare the FWHM to an analytical prediction? Plots some text
         and some dotted lines over stuff.
 
@@ -185,22 +193,15 @@ def make_radial_profile_of_diffracted_power(z_range=1500,
         expected_fullwidth_halfmax =(np.sqrt(np.log(2)) /
                                      (sigma_over_lambda * np.pi))
 
-        print ("Expected fullwidth halfmax of diffracted power: %s" % 
-               expected_fullwidth_halfmax)
-
         # This is a little hacky, but is the right way to do it
         # as long as the sampling is high enough
         actual_fullwidth_halfmax = (
             theta_array[diffracted_power >= 0.5].max() -
             theta_array[diffracted_power >= 0.5].min() )
 
-        print ("Actual fullwidth halfmax of diffracted power: %s" %
-               actual_fullwidth_halfmax)
-
         plt.plot([-expected_fullwidth_halfmax/2, 
                   expected_fullwidth_halfmax/2], 
                   [0.5, 0.5], 'r:', lw=3, label="Analytic FWHM prediction")
-
 
         plt.legend(loc="lower left")
         
@@ -216,6 +217,5 @@ def make_radial_profile_of_diffracted_power(z_range=1500,
                   actual_fullwidth_halfmax),
                  fontsize=14)
 
-    
     plt.show()
     return fig
