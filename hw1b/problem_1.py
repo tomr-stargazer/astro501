@@ -104,9 +104,10 @@ def make_radial_profile_of_E_aperture(z_max=40, sigma_over_lambda=5):
     plt.show()
     return fig
 
-def make_radial_profile_of_diffracted_power(z_range=200,
+def make_radial_profile_of_diffracted_power(z_range=1500,
                                             z_sampling=512,
-                                            sigma_over_lambda=5):
+                                            sigma_over_lambda=5,
+                                            analytical_comparison=True):
     """
     Shows the radial profile of the squared Fourier transform of E.
 
@@ -123,6 +124,9 @@ def make_radial_profile_of_diffracted_power(z_range=200,
     sigma_over_lambda : float, optional, default: 5
         The value of sigma divided by wavelength. This is
         passed onto E_aperture.
+    analytical_comparison : bool, optional, default: False
+        Compare the FWHM to an analytical prediction? Plots some text
+        and some dotted lines over stuff.
 
     Returns
     -------
@@ -158,7 +162,40 @@ def make_radial_profile_of_diffracted_power(z_range=200,
     plt.title("Radial profile of the diffracted power, for "+
               "$\\sigma / \\lambda = %s $" % sigma_over_lambda)
 
-    plt.xlim(-1,1)
+    plt.xlim(-0.3, 0.3)
+
+    if analytical_comparison:
+
+        expected_fullwidth_halfmax =(np.sqrt(np.log(2)) /
+                                     (sigma_over_lambda * np.pi))
+
+        print ("Expected fullwidth halfmax of diffracted power: %s" % 
+               expected_fullwidth_halfmax)
+
+        # This is a little hacky, but is the right way to do it
+        # as long as the sampling is high enough
+        actual_fullwidth_halfmax = (
+            theta_array[diffracted_power >= 0.5].max() -
+            theta_array[diffracted_power >= 0.5].min() )
+
+        print ("Actual fullwidth halfmax of diffracted power: %s" %
+               actual_fullwidth_halfmax)
+
+        plt.plot([-expected_fullwidth_halfmax/2, 
+                  expected_fullwidth_halfmax/2], 
+                  [0.5, 0.5], 'r:', lw=3)
+        plt.text(-0.295, 0.5, 
+                 ("Analytic calculations of FWHM:\n\n"
+                  r"$\frac{\lambda \sqrt{ \ln 2 }}{\sigma \pi}$"
+                  " = %.4f radians" % expected_fullwidth_halfmax
+                  ),
+                  fontsize=14)
+        plt.text(0.03, 0.5,
+                 ("Measured FWHM from this plot:\n\n"
+                  r"$\theta_{FWHM}$ = %.4f radians" %
+                  actual_fullwidth_halfmax),
+                 fontsize=14)
+
     
     plt.show()
     return fig
