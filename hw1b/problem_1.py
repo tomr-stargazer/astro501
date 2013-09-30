@@ -63,12 +63,23 @@ def make_radial_profile_of_E_aperture(z_max=40):
         The figure we plot the solution onto.
 
     """
+    
+    if z_max < 0:
+        raise ValueError("z_max must be a positive number!")
 
-    z_array = np.arange(0, 100, 0.05)
+    z_array = np.arange(0, z_max, 0.05)
 
     fig = plt.figure()
 
     plt.plot(z_array, E_aperture(z_array))
+
+    plt.suptitle("Astro 501, Homework #1b, Problem 1c. Tom Rice")    
+    plt.title("Radial profile of the aperture electric field")
+
+    plt.xlabel(r" $ x / \lambda $ " )
+    #    plt.ylabel(r"$ \frac{E(x / \lambda)}{ E_0 } $", rotation='horizontal')
+    plt.ylabel(r"$ E(x / \lambda) / E_0$", 
+               rotation='horizontal')
 
     plt.show()
     return fig
