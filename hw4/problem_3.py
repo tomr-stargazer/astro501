@@ -47,7 +47,8 @@ def uniform_disk_visibility(angular_size, baseline_separation):
     
     return visibility
 
-def plot_initial_guess_of_a(baseline_separation, visibility_squared):
+def plot_initial_guess_of_a(baseline_separation, visibility_squared,
+                            output_milliarcsec=True, fig=None):
     """
     Makes a plot that lets you eyeball a first guess at a solution for `a`.
 
@@ -57,6 +58,10 @@ def plot_initial_guess_of_a(baseline_separation, visibility_squared):
         The projected baseline, scaled by the wavelength. (s)    
     visibility_squared : float
         The measured visibility squared V**2.
+    output_milliarcsec : bool, optional, default True
+        Plot x axis in millarcseconds? If False, reverts to radians.
+    fig : matplotlib.figure or None, optional
+        Provide a figure to plot the new line onto.
 
     Returns
     -------
@@ -65,13 +70,19 @@ def plot_initial_guess_of_a(baseline_separation, visibility_squared):
 
     """
 
-    fig = plt.figure()
+    if fig==None:
+        fig = plt.figure()
 
     # guess array is in radians. This range should work.
     guess_array = np.arange(1e-9, 5e-9, 1e-11)
     s = baseline_separation
 
-    plt.plot( guess_array, np.abs(
+    if output_milliarcsec:
+        x_array = np.degrees(guess_array)*3600*1000
+    else:
+        x_array = guess_array
+
+    plt.plot( x_array, np.abs(
         uniform_disk_visibility(guess_array, s)**2 - visibility_squared) )
 
     return fig
