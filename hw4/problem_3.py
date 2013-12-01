@@ -90,6 +90,8 @@ def solve_problem_3(baseline_separation, visibility_squared,
         The projected baseline, scaled by the wavelength. (s)    
     visibility_squared : float
         The measured visibility squared V**2.
+    output_milliarcsec : bool, optional, default True
+        Return a value in millarcseconds? If False, reverts to radians.
 
     Returns
     -------
